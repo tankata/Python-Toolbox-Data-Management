@@ -4,11 +4,11 @@ A Python toolbox of repetion-reducing tools to help manage data in ArcGIS Pro/En
 
 Please note this is a work in progress. Additional tools and functionality will be added over time.
 
-Latest software versions tested:
+## Latest software versions tested:
 Python 3.9.x
 ArcGIS Pro 3.0.2
 
-Tools Included:
+## Tools Included:
 
     - Feature Layer Cloner
         - Copies 1 or more Feature Layers

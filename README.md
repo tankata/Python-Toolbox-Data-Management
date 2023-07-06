@@ -5,13 +5,14 @@ A Python toolbox of repetion-reducing tools to help manage data in ArcGIS Pro/En
 Please note this is a work in progress. Additional tools and functionality will be added over time.
 
 ## Latest software versions tested
-Python 3.9.x
+Python 3.9.11
 
 ArcGIS Pro 3.0.2
 
 ## Tools Included
 
 ### Feature Layer Cloner
+Updated 7-6-2023
     - Copies 1 or more Feature Layers
         - Can be from multiple geodatabases
     - Appends current date string as YYYYMMDD to layer name

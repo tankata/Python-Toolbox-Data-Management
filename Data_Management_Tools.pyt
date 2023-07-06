@@ -3,6 +3,7 @@
 import arcpy
 from datetime import datetime
 import os
+import traceback
 
 
 class Toolbox(object):
@@ -79,26 +80,32 @@ class LayerCloner(object):
 
     def execute(self, parameters, messages):
         """The source code of the tool."""
-        wkspc = parameters[2].valueAsText
-        arcpy.AddMessage(f"Workspace: {wkspc}")
+        try:
+            wkspc = parameters[2].valueAsText
+            arcpy.AddMessage(f"Workspace: {wkspc}\n")
 
-        #Export copies of selected Features
-        inFeatures = parameters[0].values
-        outNames = parameters[1].values
+            #Export copies of selected Features
+            inFeatures = parameters[0].values
+            outNames = parameters[1].values
 
-        for index, item in enumerate(inFeatures):
-            arcpy.AddMessage(f'Index: {index}, Feature: {item.name}, Data Source: {item.dataSource}')
-            outPath = os.path.join(wkspc, outNames[index])
-            arcpy.AddMessage(f'Output Path: {outPath}')
-            
-            if item.dataSource.lower()[-4:] == ".shp":
-                arcpy.AddMessage("Feature is a shapefile")
-                arcpy.conversion.FeatureClassToFeatureClass(item.dataSource, wkspc, outNames[index])
-            else:
-                arcpy.AddMessage("Feature Layer detected")
-                arcpy.management.Copy(item.dataSource, outPath)            
+            for index, item in enumerate(inFeatures):
+                # arcpy.AddMessage(f'Index: {index}, Feature: {item.name}, Data Source: {item.dataSource}')
+                outPath = os.path.join(wkspc, outNames[index])
+                # arcpy.AddMessage(f'Output Path: {outPath}')
+                
+                if item.dataSource.lower()[-4:] == ".shp":
+                    #arcpy.AddMessage("Feature is a shapefile")
+                    arcpy.conversion.FeatureClassToFeatureClass(item.dataSource, wkspc, outNames[index])
+                    arcpy.AddMessage(f"'{item.name}' was convereted from a Shapefile to a GDB Feature Layer and renamed {outNames[index]}")
+                else:
+                    #arcpy.AddMessage("Feature Layer detected")
+                    arcpy.management.Copy(item.dataSource, outPath)  
+                    arcpy.AddMessage(f"'{item.name}' copied to the workspace GDB and renamed {outNames[index]}")
 
-        return
+            return
+        except Exception:
+            arcpy.AddMessage(f'An error occured\n{traceback.format_exc()}')
+
 
     def postExecute(self, parameters):
         """This method takes place after outputs are processed and
